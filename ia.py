@@ -65,25 +65,21 @@ def open_file():
     filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
     filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
     # Process the selected file as needed
-    image = cv2.imread(filepath)
-    image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
-    image = image / 255.0  # Normalize the image
-    image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
-    prediction = model.predict(image)
-    predicted_class = "Fractured" if prediction[0][0] > 0.9 else "Not Fractured"
-    prediction_label.config(text=f"Prediction: {predicted_class}")
-    filepath = filedialog.askopenfilename(filetypes=[("Image Files", ".png;.jpg;*.jpeg")])
     if filepath:
         image = Image.open(filepath)
         image = image.resize((300, 300))
         photo = ImageTk.PhotoImage(image)
         image_label.configure(image=photo)
         image_label.image = photo
+        image = cv2.imread(filepath)
+        image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
+        image = image / 255.0  # Normalize the image
+        image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
+        prediction = model.predict(image)
+        predicted_class = "Fractured" if prediction[0][0] > 0.9 else "Not Fractured"
+        print(prediction[0][0])
+        prediction_label.config(text=f"Prediction: {predicted_class}")
     return image
-
-def predict():
-    # Add any additional prediction-related logic here, if needed
-    pass
 
 window = tk.Tk()
 
@@ -96,7 +92,7 @@ button1.pack(pady=10)
 image_label = tk.Label(window)
 image_label.pack()
 
-button2 = tk.Button(window, text="Predict Fractures", command=predict)
+button2 = tk.Label(text="Predict Fractures")
 button2.pack(pady=10)
 
 prediction_label = tk.Label(window)
