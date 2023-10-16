@@ -1,0 +1,3 @@
+train_path= 'C:\Users\chans66\Desktop\Y12\CS\IA\Shaun-Chan-Computer-Science-IA\xrayscans\dataset\archive (6)\train'
+test_path='C:\Users\chans66\Desktop\Y12\CS\IA\Shaun-Chan-Computer-Science-IA\xrayscans\dataset\archive (6)\val'
+
