@@ -17,15 +17,15 @@ def load_dataset():
 
     for image_path in train_image_paths:
         image = cv2.imread(image_path)
-        # Preprocess the image as needed
-        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        # Preprocess the image 
+        image = cv2.resize(image, (300, 300))  # Resize the image 
         train_images.append(image)
         train_labels.append(1)  
 
     for image_path in train_not_fractured_image_paths:
         image = cv2.imread(image_path)
-        # Preprocess the image as needed
-        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        # Preprocess the image 
+        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
         train_images.append(image)
         train_labels.append(0)  
 
@@ -41,15 +41,15 @@ def load_dataset():
 
     for image_path in val_image_paths:
         image = cv2.imread(image_path)
-        # Preprocess the image as needed
-        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        # Preprocess the image 
+        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
         val_images.append(image)
         val_labels.append(1)  
 
     for image_path in val_not_fractured_image_paths:
         image = cv2.imread(image_path)
-        # Preprocess the image as needed
-        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        # Preprocess the image 
+        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
         val_images.append(image)
         val_labels.append(0)  
 
@@ -80,7 +80,7 @@ model.evaluate(x_test, y_test, verbose=2)
 def open_file():
     filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
     filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
-    # Process the selected file as needed
+    # Process the selected file 
     if filepath:
         image = Image.open(filepath)
         image = image.resize((300, 300))
