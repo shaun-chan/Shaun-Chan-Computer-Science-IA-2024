@@ -10,6 +10,7 @@ import tensorflow as tf
 def load_dataset():
     train_fractured_path = "dataset/train/fractured"
     train_not_fractured_path = "dataset/train/not fractured"
+    train_not_fractured_image_paths = [os.path.join(train_not_fractured_path, filename) for filename in os.listdir(train_not_fractured_path)]
     train_image_paths = [os.path.join(train_fractured_path, filename) for filename in os.listdir(train_fractured_path)]
     train_images = []
     train_labels = []
@@ -19,7 +20,14 @@ def load_dataset():
         # Preprocess the image as needed
         image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
         train_images.append(image)
-        train_labels.append(1)  # Assuming fractured images have label 1
+        train_labels.append(1)  
+
+    for image_path in train_not_fractured_image_paths:
+        image = cv2.imread(image_path)
+        # Preprocess the image as needed
+        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        train_images.append(image)
+        train_labels.append(0)  
 
     train_images = np.array(train_images)
     train_labels = np.array(train_labels)
@@ -27,6 +35,7 @@ def load_dataset():
     val_fractured_path = "dataset/val/fractured"
     val_not_fractured_path = "dataset/val/not fractured"
     val_image_paths = [os.path.join(val_fractured_path, filename) for filename in os.listdir(val_fractured_path)]
+    val_not_fractured_image_paths = [os.path.join(val_not_fractured_path, filename) for filename in os.listdir(val_not_fractured_path)]
     val_images = []
     val_labels = []
 
@@ -35,7 +44,14 @@ def load_dataset():
         # Preprocess the image as needed
         image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
         val_images.append(image)
-        val_labels.append(1)  # Assuming fractured images have label 1
+        val_labels.append(1)  
+
+    for image_path in val_not_fractured_image_paths:
+        image = cv2.imread(image_path)
+        # Preprocess the image as needed
+        image = cv2.resize(image, (300, 300))  # Resize the image to a consistent size
+        val_images.append(image)
+        val_labels.append(0)  
 
     val_images = np.array(val_images)
     val_labels = np.array(val_labels)
@@ -76,7 +92,7 @@ def open_file():
         image = image / 255.0  # Normalize the image
         image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
         prediction = model.predict(image)
-        predicted_class = "Fractured" if prediction[0][0] > 0.9 else "Not Fractured"
+        predicted_class = "Fractured" if prediction[0][0] > 0.75 else "Not Fractured"
         print(prediction[0][0])
         prediction_label.config(text=f"Prediction: {predicted_class}")
     return image
