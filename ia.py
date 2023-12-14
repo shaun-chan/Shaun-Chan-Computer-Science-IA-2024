@@ -77,25 +77,53 @@ model.compile(optimizer='adam',
 model.fit(x_train, y_train, epochs=5)
 model.evaluate(x_test, y_test, verbose=2)
 
-def open_file():
-    filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
-    filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
+#save model
+accuracy = model.evaluate(x_test, y_test)[1]  # Get the accuracy value
+model_filename = f"model_{accuracy:.4f}.keras"  # Generate the filename
+model.save(model_filename) 
+print(f"Model saved as: {model_filename}")
+
+#load saved mdoel
+# model_path = "C:/Users/chans66/Desktop/Y12/CS/IA/Shaun-Chan-Computer-Science-IA/model_0.8846.keras"
+# model = tf.keras.models.load_model(model_path)
+# def open_file():
+#    filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
+#    filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
     # Process the selected file 
-    if filepath:
-        image = Image.open(filepath)
-        image = image.resize((300, 300))
-        photo = ImageTk.PhotoImage(image)
-        image_label.configure(image=photo)
-        image_label.image = photo
-        image = cv2.imread(filepath)
-        image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
-        image = image / 255.0  # Normalize the image
-        image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
-        prediction = model.predict(image)
-        predicted_class = "Fractured" if prediction[0][0] > 0.75 else "Not Fractured"
-        print(prediction[0][0])
-        prediction_label.config(text=f"Prediction: {predicted_class}")
-    return image
+#    if filepath:
+#       image = Image.open(filepath)
+#       image = image.resize((300, 300))
+#       photo = ImageTk.PhotoImage(image)
+#       image_label.configure(image=photo)
+#       image_label.image = photo
+#       image = cv2.imread(filepath)
+#       image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
+#       image = image / 255.0  # Normalize the image
+#       image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
+#       prediction = model.predict(image)
+#       predicted_class = "Fractured" if prediction[0][0] > 0.75 else "Not Fractured"
+#       print(prediction[0][0])
+#       prediction_label.config(text=f"Prediction: {predicted_class} ({prediction[0][0]})")
+#   return image
+
+def check_folder():
+    folder_path = filedialog.askdirectory(title="Select Folder")
+    if folder_path:
+        fractured_images = []
+        for filename in os.listdir(folder_path):
+            image_path = os.path.join(folder_path, filename)
+            image = cv2.imread(image_path)
+            image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
+            image = image / 255.0  # Normalize the image
+            image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
+            prediction = model.predict(image)
+            if prediction[0][0] > 0.75:
+                fractured_images.append(filename)
+        if fractured_images:
+            fractured_images_str = "\n".join(fractured_images)
+            prediction_label.config(text=f"Fractured Images:\n{fractured_images_str}")
+        else:
+            prediction_label.config(text="No fractured images found in the folder.")
 
 window = tk.Tk()
 
@@ -104,6 +132,9 @@ greeting.pack()
 
 button1 = tk.Button(window, text="Select Photo", command=open_file)
 button1.pack(pady=10)
+
+button2 = tk.Button(window, text="Check Folder", command=check_folder)
+button2.pack(pady=10)
 
 image_label = tk.Label(window)
 image_label.pack()
@@ -114,4 +145,4 @@ button2.pack(pady=10)
 prediction_label = tk.Label(window)
 prediction_label.pack(pady=10)
 
-window.mainloop()
+window.mainloop()   
