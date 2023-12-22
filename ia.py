@@ -84,27 +84,28 @@ model.save(model_filename)
 print(f"Model saved as: {model_filename}")
 
 #load saved mdoel
-# model_path = "C:/Users/chans66/Desktop/Y12/CS/IA/Shaun-Chan-Computer-Science-IA/model_0.8846.keras"
-# model = tf.keras.models.load_model(model_path)
-# def open_file():
-#    filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
-#    filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
+#model_path = "C:/Users/chans66/Desktop/Y12/CS/IA/Shaun-Chan-Computer-Science-IA/model_0.8846.keras"
+#model = tf.keras.models.load_model(model_path)
+
+def open_file():
+    filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
+    filepath = filedialog.askopenfilename(title="Select Photo", filetypes=filetypes)
     # Process the selected file 
-#    if filepath:
-#       image = Image.open(filepath)
-#       image = image.resize((300, 300))
-#       photo = ImageTk.PhotoImage(image)
-#       image_label.configure(image=photo)
-#       image_label.image = photo
-#       image = cv2.imread(filepath)
-#       image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
-#       image = image / 255.0  # Normalize the image
-#       image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
-#       prediction = model.predict(image)
-#       predicted_class = "Fractured" if prediction[0][0] > 0.75 else "Not Fractured"
-#       print(prediction[0][0])
-#       prediction_label.config(text=f"Prediction: {predicted_class} ({prediction[0][0]})")
-#   return image
+    if filepath:
+       image = Image.open(filepath)
+       image = image.resize((300, 300))
+       photo = ImageTk.PhotoImage(image)
+       image_label.configure(image=photo)
+       image_label.image = photo
+       image = cv2.imread(filepath)
+       image = cv2.resize(image, (300, 300))  # Resize the image to match the model input shape
+       image = image / 255.0  # Normalize the image
+       image = np.expand_dims(image, axis=0)  # Add an extra dimension to match the model input shape
+       prediction = model.predict(image)
+       predicted_class = "Fractured" if prediction[0][0] > 0.75 else "Not Fractured"
+       print(prediction[0][0])
+       prediction_label.config(text=f"Prediction: {predicted_class} ({prediction[0][0]})")
+    return image
 
 def check_folder():
     folder_path = filedialog.askdirectory(title="Select Folder")
