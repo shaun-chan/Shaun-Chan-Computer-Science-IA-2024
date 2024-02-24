@@ -7,85 +7,85 @@ import numpy as np
 from matplotlib import pyplot as plt
 import tensorflow as tf
 
-def load_dataset():
-    train_fractured_path = "dataset/train/fractured"
-    train_not_fractured_path = "dataset/train/not fractured"
-    train_not_fractured_image_paths = [os.path.join(train_not_fractured_path, filename) for filename in os.listdir(train_not_fractured_path)]
-    train_image_paths = [os.path.join(train_fractured_path, filename) for filename in os.listdir(train_fractured_path)]
-    train_images = []
-    train_labels = []
+#def load_dataset():
+#    train_fractured_path = "dataset/train/fractured"
+#    train_not_fractured_path = "dataset/train/not fractured"
+#    train_not_fractured_image_paths = [os.path.join(train_not_fractured_path, filename) for filename in os.listdir(train_not_fractured_path)]
+#    train_image_paths = [os.path.join(train_fractured_path, filename) for filename in os.listdir(train_fractured_path)]
+#    train_images = []
+#    train_labels = []
 
-    for image_path in train_image_paths:
-        image = cv2.imread(image_path)
+#    for image_path in train_image_paths:
+#        image = cv2.imread(image_path)
         # Preprocess the image 
-        image = cv2.resize(image, (300, 300))  # Resize the image 
-        train_images.append(image)
-        train_labels.append(1)  
+#        image = cv2.resize(image, (300, 300))  # Resize the image 
+#        train_images.append(image)
+#        train_labels.append(1)  
 
-    for image_path in train_not_fractured_image_paths:
-        image = cv2.imread(image_path)
+#    for image_path in train_not_fractured_image_paths:
+#        image = cv2.imread(image_path)
         # Preprocess the image 
-        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
-        train_images.append(image)
-        train_labels.append(0)  
+#        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
+#        train_images.append(image)
+#        train_labels.append(0)  
 
-    train_images = np.array(train_images)
-    train_labels = np.array(train_labels)
+#    train_images = np.array(train_images)
+#    train_labels = np.array(train_labels)
 
-    val_fractured_path = "dataset/val/fractured"
-    val_not_fractured_path = "dataset/val/not fractured"
-    val_image_paths = [os.path.join(val_fractured_path, filename) for filename in os.listdir(val_fractured_path)]
-    val_not_fractured_image_paths = [os.path.join(val_not_fractured_path, filename) for filename in os.listdir(val_not_fractured_path)]
-    val_images = []
-    val_labels = []
+#    val_fractured_path = "dataset/val/fractured"
+#    val_not_fractured_path = "dataset/val/not fractured"
+#    val_image_paths = [os.path.join(val_fractured_path, filename) for filename in os.listdir(val_fractured_path)]
+#    val_not_fractured_image_paths = [os.path.join(val_not_fractured_path, filename) for filename in os.listdir(val_not_fractured_path)]
+#    val_images = []
+#    val_labels = []
 
-    for image_path in val_image_paths:
-        image = cv2.imread(image_path)
+#    for image_path in val_image_paths:
+#        image = cv2.imread(image_path)
         # Preprocess the image 
-        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
-        val_images.append(image)
-        val_labels.append(1)  
+#        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
+#        val_images.append(image)
+#        val_labels.append(1)  
 
-    for image_path in val_not_fractured_image_paths:
-        image = cv2.imread(image_path)
+#    for image_path in val_not_fractured_image_paths:
+#        image = cv2.imread(image_path)
         # Preprocess the image 
-        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
-        val_images.append(image)
-        val_labels.append(0)  
+#        image = cv2.resize(image, (300, 300))  # Resize to a consistent size
+#        val_images.append(image)
+#        val_labels.append(0)  
 
-    val_images = np.array(val_images)
-    val_labels = np.array(val_labels)
+#    val_images = np.array(val_images)
+#    val_labels = np.array(val_labels)
 
-    return (train_images, train_labels), (val_images, val_labels)
+#    return (train_images, train_labels), (val_images, val_labels)
 
-(x_train, y_train), (x_test, y_test) = load_dataset()
-x_train = x_train / 255.0
-x_test = x_test / 255.0
+#(x_train, y_train), (x_test, y_test) = load_dataset()
+#x_train = x_train / 255.0
+#x_test = x_test / 255.0
 
-model = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(300, 300, 3)),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(1, activation='sigmoid')
-])
+#model = tf.keras.models.Sequential([
+#    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(300, 300, 3)),
+#    tf.keras.layers.MaxPooling2D((2, 2)),
+#    tf.keras.layers.Flatten(),
+#    tf.keras.layers.Dense(128, activation='relu'),
+#    tf.keras.layers.Dense(1, activation='sigmoid')
+#])
 
-model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
+#model.compile(optimizer='adam',
+#              loss='binary_crossentropy',
+#              metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
-model.evaluate(x_test, y_test, verbose=2)
+#model.fit(x_train, y_train, epochs=5)
+#model.evaluate(x_test, y_test, verbose=2)
 
 #save model
-accuracy = model.evaluate(x_test, y_test)[1]  # Get the accuracy value
-model_filename = f"model_{accuracy:.4f}.keras"  # Generate the filename
-model.save(model_filename) 
-print(f"Model saved as: {model_filename}")
+#accuracy = model.evaluate(x_test, y_test)[1]  # Get the accuracy value
+#model_filename = f"model_{accuracy:.4f}.keras"  # Generate the filename
+#model.save(model_filename) 
+#print(f"Model saved as: {model_filename}")
 
 #load saved mdoel
-#model_path = "C:/Users/chans66/Desktop/Y12/CS/IA/Shaun-Chan-Computer-Science-IA/model_0.8846.keras"
-#model = tf.keras.models.load_model(model_path)
+model_path = "C:/Users/chans66/Desktop/Y12/CS/IA/Shaun-Chan-Computer-Science-IA/model_0.8846.keras"
+model = tf.keras.models.load_model(model_path)
 
 def open_file():
     filetypes = (("Image files", "*.jpg;*.jpeg;*.png"), ("All files", "*.*"))
